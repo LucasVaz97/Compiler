@@ -86,11 +86,14 @@ class Parser:
         return result
 
 
-entrada="10+   20   -10-1"
 
+def main():
+    code=sys.argv[1]
+    result = Parser.run(code)
 
-print(Parser.run(entrada))
+    return result
 
+main()
 
 
 
