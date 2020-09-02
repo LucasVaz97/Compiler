@@ -86,7 +86,7 @@ class Parser:
         return result
 
 
-entrada="10+   20   -10-1"
+entrada=sys.argv[1]
 
 
 print(Parser.run(entrada))
