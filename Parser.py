@@ -35,6 +35,7 @@ class Parser:
                 if(Parser.Toke.actual.type=="Number"):
                     value= int(Parser.Toke.actual.value)
                     result=result*value
+                   
                 else:
                     raise TypeError("Only integers are allowed")
             if(Parser.Toke.actual.type=="Divide"):
@@ -45,12 +46,11 @@ class Parser:
                 else:
                     raise TypeError("Only integers are allowed") 
 
+
             Parser.Toke.selectNext()
 
-            if(Parser.Toke.actual.type=="Number"):
-                raise TypeError("Only integers are allowed") 
-
-            return result
+        if(Parser.Toke.actual.type=="Number"):
+            raise TypeError("Missing sign") 
         
         return result
 
