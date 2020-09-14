@@ -3,7 +3,9 @@ import re
 TypeDic={"+":"Plus",
         "-":"Minus",
         "*":"Multiply",
-        "/":"Divide"}
+        "/":"Divide",
+        "(":"OpenP",
+        ")":"CloseP"}
 
 
 class Token:
@@ -18,6 +20,7 @@ class Tokenizer:
         self.origin=re.sub("(#=)((.|\n)*?)(=#)","",origin)
         self.position = 0
         self.actual=""
+        self.selectNext()
 
     def selectNext(self):
         digits="0123456789"
