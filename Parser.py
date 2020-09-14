@@ -27,7 +27,7 @@ class Parser:
                 Parser.Toke.selectNext()
                 value=Parser.parseFactor(0)
                 result = result*value
-                print(Parser.Toke.actual.type)
+    
 
             if(Parser.Toke.actual.type=="Divide"):
                 Parser.Toke.selectNext()
