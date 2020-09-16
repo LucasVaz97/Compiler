@@ -73,4 +73,7 @@ class Parser:
     def run(code):
         Parser.Toke=Tokenizer(code)
         result = Parser.parseExpression()
+        if(Parser.Toke.actual.type!="End"):
+            raise TypeError("Finished Before EOF") 
+        
         return result
