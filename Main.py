@@ -4,9 +4,10 @@ import re
 from Parser import Parser
 
 def main():
-    code=sys.argv[1]
-    result = Parser.run(code)
-    print(result)
+    path=sys.argv[1]
+    path=open(path,"r").read()
+    result = Parser.run(path)
+    print(result.Evaluate())
     return result
 
 

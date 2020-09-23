@@ -1,4 +1,5 @@
 from Tokenizer import *
+from Node import *
 
 class Parser:
     Toke=None
@@ -7,41 +8,28 @@ class Parser:
         result=Parser.parseTerm()
         while(Parser.Toke.actual.type=="Plus" or Parser.Toke.actual.type=="Minus"):
             if(Parser.Toke.actual.value in TypeDic):
-                if(Parser.Toke.actual.type=="Plus"):
-                    value=int(Parser.parseTerm())
-                    result=result+value
-                elif(Parser.Toke.actual.type=="Minus"):
-                    value= int(Parser.parseTerm())
-                    result=result+value
-                elif(Parser.Toke.actual.type=="CloseP"):
-                    Parser.Toke.selectNext()
-                    return result
-
+                result=BinOp(Parser.Toke.actual.value,[result,None])
+                Parser.Toke.selectNext()
+                result.children[1]=Parser.parseTerm()
         return result
 
     @staticmethod
     def parseTerm():
-        result=Parser.parseFactor(0)
+        result=Parser.parseFactor()
         while(Parser.Toke.actual.type=="Multiply" or Parser.Toke.actual.type=="Divide"):
-            if(Parser.Toke.actual.type=="Multiply"):
+            if(Parser.Toke.actual.value in TypeDic):
+                result=BinOp(Parser.Toke.actual.value,[result,None])
                 Parser.Toke.selectNext()
-                value=Parser.parseFactor(0)
-                result = result*value
-    
-
-            if(Parser.Toke.actual.type=="Divide"):
-                Parser.Toke.selectNext()
-                value=Parser.parseFactor(0)
-                result = int(result/value)
-                
+                result.children[1]=Parser.parseFactor()
+          
         if(Parser.Toke.actual.type=="Number"):
             raise TypeError("Missing sign") 
     
         return result
 
     @staticmethod
-    def parseFactor(counter):
-
+    def parseFactor():
+        result=0
         if(Parser.Toke.actual.type=="OpenP"):
             Parser.Toke.selectNext()
             result=Parser.parseExpression()
@@ -50,20 +38,19 @@ class Parser:
                 return(result)
             else:
                  raise TypeError("Missing Closed Parentesis") 
-        elif(Parser.Toke.actual.type=="Plus"):
+
+        elif(Parser.Toke.actual.type=="Plus" or Parser.Toke.actual.type=="Minus"):
+            result=UnOp(Parser.Toke.actual.value,[result])
             Parser.Toke.selectNext()
-            result=Parser.parseFactor(counter)
-            return result
-        elif(Parser.Toke.actual.type=="Minus"):
-            Parser.Toke.selectNext()
-            result=Parser.parseFactor(counter+1)
-            return result
+            result.children[0]=Parser.parseFactor()
+
+
+
         elif(Parser.Toke.actual.type=="Number"):
-            result=int(Parser.Toke.actual.value)
+            result=intVal(Parser.Toke.actual.value,None)
             Parser.Toke.selectNext()
-            if(counter%2!=0):
-                result=result*-1
-            return result
+        
+        return result
 
 
 
