@@ -16,7 +16,7 @@ class Parser:
     @staticmethod
     def Command():
         if(Parser.Toke.actual.type=="Command"):
-            if(Parser.Toke.actual.value=="printf"):
+            if(Parser.Toke.actual.value=="println"):
                 Parser.Toke.selectNext()
                 result=Parser.ParseExpression().Evaluate()
                 print(result)
