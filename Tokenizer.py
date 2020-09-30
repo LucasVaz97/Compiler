@@ -8,7 +8,7 @@ TypeDic={"+":"Plus",
         ")":"CloseP",
         "=":"Equal"}
 
-KeyWords=["printf","ok"]
+KeyWords=["println"]
 
 
 class Token:

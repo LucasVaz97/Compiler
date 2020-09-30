@@ -16,29 +16,25 @@ class Parser:
     @staticmethod
     def Command():
         if(Parser.Toke.actual.type=="Command"):
-            if(Parser.Toke.actual.value=="printf"):
+            if(Parser.Toke.actual.value=="println"):
                 Parser.Toke.selectNext()
                 result=Parser.ParseExpression().Evaluate()
                 print(result)
         elif(Parser.Toke.actual.type=="Variable"):
             Variable=Parser.Toke.actual.value
             Parser.Toke.selectNext()
-            if(Parser.Toke.actual.value=="="):
-                Parser.Toke.selectNext()
-                value=Parser.ParseExpression().Evaluate()
-                SetEqual("=",[Variable,value]).Evaluate()
-
-        else:
-            raise ValueError("Invalid expression: Declare a variable or call a Command")
-                        
+            result=Varop(Parser.Toke.actual.value,[Variable,None])
+            Parser.Toke.selectNext()
+            result.children[1]=Parser.ParseExpression().Evaluate()
+            result.Evaluate()
+            
     @staticmethod
     def ParseExpression():
         result=Parser.ParseTerm()
         while(Parser.Toke.actual.type=="Plus" or Parser.Toke.actual.type=="Minus"):
-            if(Parser.Toke.actual.value in TypeDic):
-                result=BinOp(Parser.Toke.actual.value,[result,None])
-                Parser.Toke.selectNext()
-                result.children[1]=Parser.ParseTerm()
+            result=BinOp(Parser.Toke.actual.value,[result,None])
+            Parser.Toke.selectNext()
+            result.children[1]=Parser.ParseTerm()
         return result
 
     @staticmethod

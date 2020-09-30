@@ -28,6 +28,9 @@ class BinOp(Node):
             result = self.children[0].Evaluate()/self.children[1].Evaluate()
             return int(result)
 
+        else:
+            raise ValueError("Invalid Operation")
+
 
 class UnOp(Node):
 
@@ -40,6 +43,7 @@ class UnOp(Node):
 
         if(self.value=="Variable"):
             return self.children[0].Evaluate()
+
 
 
 class intVal(Node):
@@ -60,8 +64,12 @@ class NoOp(Node):
 
 
 
-class SetEqual(Node):
+class Varop(Node):
     def Evaluate(self):
-        symbT.SetVariable(self.children[0],self.children[1])
+        if(self.value=="="):
+            symbT.SetVariable(self.children[0],self.children[1])
+        else:
+            raise ValueError("Invalid Operation")
+        
 
 
