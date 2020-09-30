@@ -28,6 +28,9 @@ class Parser:
             result.children[1]=Parser.ParseExpression().Evaluate()
             result.Evaluate()
             
+        elif(Parser.Toke.actual.type!="NewLine"):
+            raise TypeError("Insert Command ou Variable")
+
     @staticmethod
     def ParseExpression():
         result=Parser.ParseTerm()
