@@ -52,4 +52,5 @@ class Tokenizer:
             if(var in KeyWords):
                 self.actual=Token("Command",var)
             else:
-                 self.actual=Token("Variable",var)
+                var=var.replace(" ","")
+                self.actual=Token("Variable",var)
