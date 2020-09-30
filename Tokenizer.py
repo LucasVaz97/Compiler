@@ -5,7 +5,10 @@ TypeDic={"+":"Plus",
         "*":"Multiply",
         "/":"Divide",
         "(":"OpenP",
-        ")":"CloseP"}
+        ")":"CloseP",
+        "=":"Equal"}
+
+KeyWords=["printf","ok"]
 
 
 class Token:
@@ -29,12 +32,24 @@ class Tokenizer:
         elif(self.origin[self.position] in " \f"):
             self.position+=1
             self.selectNext()
-        elif(self.origin[self.position] not in digits):
+        elif(self.origin[self.position]=="\n"):
+            self.actual=Token("NewLine",0)
+            self.position+=1
+        elif(self.origin[self.position] not in digits and self.origin[self.position] in TypeDic):
             self.actual=Token(TypeDic[self.origin[self.position]],self.origin[self.position])
             self.position+=1
-        else:
+        elif(self.origin[self.position] in digits):
             num=""
             while(self.position!=len(self.origin) and self.origin[self.position] in digits):
                 num=num+self.origin[self.position]
                 self.position+=1
             self.actual=Token("Number",num)
+        else:
+            var=""
+            while(self.position!=len(self.origin) and self.origin[self.position] not in TypeDic and self.origin[self.position].isalpha and self.origin[self.position]!="\n"):
+                var=var+self.origin[self.position]
+                self.position+=1
+            if(var in KeyWords):
+                self.actual=Token("Command",var)
+            else:
+                 self.actual=Token("Variable",var)

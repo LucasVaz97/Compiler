@@ -1,3 +1,6 @@
+from SymbolTable import *
+symbT=SymbolTable()
+
 class Node:
     def __init__(self,value,children):
         self.value=value
@@ -35,14 +38,19 @@ class UnOp(Node):
         if(self.value=="-"):
             return -self.children[0].Evaluate()
 
+        if(self.value=="Variable"):
+            return self.children[0].Evaluate()
 
 
 class intVal(Node):
 
     def Evaluate(self):
-
         return int(self.value)
 
+class Val(Node):
+
+    def Evaluate(self):
+        return symbT.GetVariable(self.value)
 
 
 class NoOp(Node):
@@ -51,5 +59,9 @@ class NoOp(Node):
         pass
 
 
+
+class SetEqual(Node):
+    def Evaluate(self):
+        symbT.SetVariable(self.children[0],self.children[1])
 
 
