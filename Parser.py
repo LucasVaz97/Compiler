@@ -49,7 +49,8 @@ class Parser:
                         block2=Parser.Block()
                         ifOb.children[2]=(block2)
 
-
+                if(Parser.Toke.actual.value!="end"):
+                    raise ValueError("Missing end")
      
                 return ifOb
 
@@ -65,6 +66,9 @@ class Parser:
                     Parser.Toke.selectNext()
                     block=Parser.Block()
                     whileOb.children.append(block)
+
+                    if(Parser.Toke.actual.value!="end"):
+                        raise ValueError("Missing end")
                     return whileOb
                     
                 else:
