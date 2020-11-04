@@ -10,7 +10,8 @@ class Parser:
         block=Block("Block",[])
         while(Parser.Toke.actual.type!="EOF" and Parser.Toke.actual.value!="end" and Parser.Toke.actual.value!="else" and Parser.Toke.actual.value!="elseif"):
             result=Parser.Command()
-            block.children.append(result)
+            if(result!=None):
+                block.children.append(result)
             Parser.Toke.selectNext()
         
            
@@ -54,9 +55,6 @@ class Parser:
      
                 return ifOb
 
-
-               
-        
             elif(Parser.Toke.actual.value=="while"):
                 whileOb=WhileOP("while",[])
                 Parser.Toke.selectNext()
@@ -74,8 +72,28 @@ class Parser:
                 else:
                     raise ValueError("Invalid Sintax")
 
+        elif(Parser.Toke.actual.type=="Scope"):
+            Parser.Toke.selectNext()
+            if(Parser.Toke.actual.type=="Variable"):
+                var=Parser.Toke.actual.value
+                Parser.Toke.selectNext()
+                if(Parser.Toke.actual.type=="Declaration"):
+                    Parser.Toke.selectNext()
+                    if(Parser.Toke.actual.type=="Type"):
+                        type_=Parser.Toke.actual.value
+                        symbT.DeclareVariable(var,None,type_)
+                        Parser.Toke.selectNext()
+                    else:
+                        raise ValueError("Missing var type declaration")
+                else:
+                    raise ValueError("Missing Declaration after variable --> :: ")
+            else:
+                raise ValueError("Missing Variable after Scope")
+            
+
+
         elif(Parser.Toke.actual.type=="Variable"):
-            Variable=Parser.Toke.actual.value
+            Variable=symbT.GetVariable(Parser.Toke.actual.value)
             Parser.Toke.selectNext()
             result=Varop(Parser.Toke.actual.value,[Variable,None])
             Parser.Toke.selectNext()
@@ -102,8 +120,7 @@ class Parser:
         elif(Parser.Toke.actual.type!="NewLine"):
             raise TypeError("Insert Command ou Variable")
 
-        
-        return NoOp(0,[])
+        return None
 
 
 
@@ -135,6 +152,9 @@ class Parser:
           
         if(Parser.Toke.actual.type=="Number"):
             raise TypeError("Missing sign") 
+
+        if(Parser.Toke.actual.type=="String"):
+            raise TypeError("Cannot declare 'String' 'String'") 
     
         return result
 
@@ -161,6 +181,19 @@ class Parser:
 
         elif(Parser.Toke.actual.type=="Variable"):
             result=Val(Parser.Toke.actual.value,None)
+            Parser.Toke.selectNext()
+
+        elif(Parser.Toke.actual.type=="String"):
+            result=StrVal(Parser.Toke.actual.value,None)
+            Parser.Toke.selectNext()
+
+        elif(Parser.Toke.actual.type=="Bool"):
+            condition=None
+            if(Parser.Toke.actual.value=="true"):
+                condition=True
+            else:
+                condition=False
+            result=BoolVal(condition,None)
             Parser.Toke.selectNext()
         
         return result

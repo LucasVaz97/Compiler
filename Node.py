@@ -1,6 +1,12 @@
 from SymbolTable import *
 symbT=SymbolTable()
 
+pythonTypeDic={
+    "str":"String",
+    "int":"Int",
+    "bool":"Bool"
+}
+
 class Node:
     def __init__(self,value,children):
         self.value=value
@@ -10,18 +16,24 @@ class Node:
         pass
 
 class BinOp(Node):
-    
+
     def Evaluate(self):
         if(self.value=="+"):
-            result = self.children[0].Evaluate()+self.children[1].Evaluate()
-            return result
+            if(self.children[0].GetType() != "String"):
+                result = self.children[0].Evaluate()+ self.children[1].Evaluate()
+            else:
+                raise ValueError("Cannot Sum String")
         
         elif (self.value=="-"):
             result = self.children[0].Evaluate()-self.children[1].Evaluate()
             return result
 
         elif (self.value=="*"):
-            result = self.children[0].Evaluate()*self.children[1].Evaluate()
+            if(self.children[0].GetType() == "String" or self.children[1].GetType() == "String" ):
+                result = str(self.children[0].Evaluate())+str(self.children[1].Evaluate())
+            else:
+                result = self.children[0].Evaluate()*self.children[1].Evaluate()
+
             return result
 
         elif (self.value=="/"):
@@ -30,27 +42,33 @@ class BinOp(Node):
 
         elif (self.value=="&&"):
             result =  (self.children[0].Evaluate() and self.children[1].Evaluate())
-            return (result)
+            return bool(result)
 
         elif (self.value=="||"):
             result =  (self.children[0].Evaluate() or self.children[1].Evaluate())
-            return (result)
+            type_=type(result).__name__
+            return bool(result)
 
         elif (self.value=="=="):
             result =  (self.children[0].Evaluate() == self.children[1].Evaluate())
-            return (result)
+            return bool(result)
 
         elif (self.value==">"):
             result =  (self.children[0].Evaluate() > self.children[1].Evaluate())
-            return (result)
+            return bool(result)
 
         elif (self.value=="<"):
             result =  (self.children[0].Evaluate() < self.children[1].Evaluate())
-            return (result)
+            return bool(result)
 
 
         else:
             raise ValueError("Invalid Operation")
+
+
+    def GetType(self):
+        type_=type(self.Evaluate()).__name__
+        return pythonTypeDic[type_]
 
 
 
@@ -100,6 +118,9 @@ class Println(Node):
 
 
 class ReadLine(Node):
+    def GetType(self):
+        return "Int"
+
     def Evaluate(self):
         a= input()
         val=int(a)
@@ -110,21 +131,48 @@ class ReadLine(Node):
 
 
 class intVal(Node):
+    def GetType(self):
+        return "Int"
 
     def Evaluate(self):
         return int(self.value)
 
+class StrVal(Node):
 
-class Val(Node):
+    def GetType(self):
+        return "String"
 
     def Evaluate(self):
-        return symbT.GetVariable(self.value)
+        return str(self.value)
+
+class BoolVal(Node):
+
+    def GetType(self):
+        return "Bool"
+
+    def Evaluate(self):
+        return bool(self.value)
+
+
+class Val(Node):
+    def GetType(self):
+        return symbT.GetVariable(self.value).type
+
+    def Evaluate(self):
+        return symbT.GetVariable(self.value).value
+
+    
+
 
 
 class Varop(Node):
     def Evaluate(self):
         if(self.value=="="):
-            symbT.SetVariable(self.children[0],self.children[1].Evaluate())
+            if(self.children[0].type==self.children[1].GetType()):
+                symbT.SetVariable(self.children[0].name,self.children[1].Evaluate())
+            else:
+                raise SyntaxError("Invalid Type association")
+                
         else:
             raise ValueError("Invalid Operation")
 
@@ -137,5 +185,4 @@ class NoOp(Node):
     def Evaluate(self):
         pass
         
-
 

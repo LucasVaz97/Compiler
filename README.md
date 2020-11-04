@@ -1,7 +1,8 @@
 # Compiler
 ```
 * BLOCK = { COMMAND } ;
-* COMMAND = ( λ | ASSIGNMENT | PRINT | IF | WHILE), "\n" ;
+* COMMAND = ( λ | ASSIGNMENT | PRINT | IF | WHILE | LOCAL), "\n" ;
+* LOCAL = "local", IDENTIFIER, "::", TYPE;
 * ASSIGNMENT = IDENTIFIER, "=", (REL_EXPRESSION | readline, "(", ")" ) ;
 * PRINT = "println", "(", REL_EXPRESSION, ")" ;
 * EXPRESSION = TERM, { ("+" | "-" | "||"), TERM } ;
@@ -14,6 +15,9 @@
 * FACTOR = (("+" | "-" | "!"), FACTOR) | NUMBER | "(", REL_EXPRESSION, ")" | IDENTIFIER ;
 * IDENTIFIER = LETTER, { LETTER | DIGIT | "_" } ;
 * NUMBER = DIGIT, { DIGIT } ;
+* TYPE = "Int" | "Bool" | "String"; 
+* STRING = '"', (.*?), '"';
+* BOOLEAN = "true" | "false";
 * LETTER = ( a | ... | z | A | ... | Z ) ;
 * DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
-```
+
