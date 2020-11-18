@@ -81,8 +81,9 @@ class Parser:
                     Parser.Toke.selectNext()
                     if(Parser.Toke.actual.type=="Type"):
                         type_=Parser.Toke.actual.value
-                        symbT.DeclareVariable(var,None,type_)
-                        Parser.Toke.selectNext()
+                        declareOb=DeclareVal(var,[])
+                        declareOb.children.append(type_)
+                        return declareOb
                     else:
                         raise ValueError("Missing var type declaration")
                 else:
@@ -93,9 +94,9 @@ class Parser:
 
 
         elif(Parser.Toke.actual.type=="Variable"):
-            Variable=symbT.GetVariable(Parser.Toke.actual.value)
+            Var=Variable(Parser.Toke.actual.value,None,None,None)
             Parser.Toke.selectNext()
-            result=Varop(Parser.Toke.actual.value,[Variable,None])
+            result=Varop(Parser.Toke.actual.value,[Var,None])
             Parser.Toke.selectNext()
             if(Parser.Toke.actual.value=="readline"):
                 rl=ReadLine(None,[])

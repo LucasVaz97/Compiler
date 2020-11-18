@@ -1,16 +1,18 @@
 class Variable:
-    def __init__(self,name,value,type_):
+    def __init__(self,name,value,type_,EBPNum):
         self.name=name
         self.value=value
         self.type=type_
+        self.EBPNum=EBPNum
 
 
 class SymbolTable:
     def __init__(self):
         self.table = {}
+        self.EBPNum=0
 
     def DeclareVariable(self,name,value,type_):
-        variable=Variable(name,value,type_)
+        variable=Variable(name,value,type_,self.EBPNum)
         if(variable.name not in self.table):
             self.table[variable.name]=variable
         else:
