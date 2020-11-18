@@ -40,8 +40,8 @@ class Compiler:
         MOV EAX, SYS_WRITE
         MOV EBX, STDOUT
         POP ECX
-        MOV [ r e s ] , ECX
-        MOV ECX, r e s
+        MOV [res],ECX
+        MOV ECX,res
         MOV EDX, 1
         INT 0x80
         JMP print_next
@@ -87,7 +87,7 @@ class Compiler:
       
     @staticmethod
     def WriteFile():
-        f = open("Asm.txt", "w+")
+        f = open("Asm.asm", "w+")
         f.write(Compiler.code)
         f.close()
 

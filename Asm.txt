@@ -39,8 +39,8 @@
         MOV EAX, SYS_WRITE
         MOV EBX, STDOUT
         POP ECX
-        MOV [ r e s ] , ECX
-        MOV ECX, r e s
+        MOV [res],ECX
+        MOV ECX,res
         MOV EDX, 1
         INT 0x80
         JMP print_next
@@ -91,10 +91,10 @@ POP EAX
 CMP EAX, EBX
 CALL binop_jg
 CMP EBX, False
-JE EXIT_29
+JE EXIT_11
 MOV EBX, 10
 MOV [EBP-8], EBX
-EXIT_29:
+EXIT_11:
 MOV EBX, [EBP-4]
 PUSH EBX
 MOV EBX, 10
@@ -102,7 +102,7 @@ POP EAX
 CMP EAX, EBX
 CALL binop_jg
 CMP EBX, False
-JNE EXIT_ELSE_29
+JNE EXIT_ELSE_11
 MOV EBX, [EBP-4]
 PUSH EBX
 MOV EBX, 5
@@ -110,10 +110,10 @@ POP EAX
 CMP EAX, EBX
 CALL binop_je
 CMP EBX, False
-JE EXIT_29
+JE EXIT_18
 MOV EBX, 5
 MOV [EBP-8], EBX
-EXIT_29:
+EXIT_18:
 MOV EBX, [EBP-4]
 PUSH EBX
 MOV EBX, 5
@@ -121,12 +121,17 @@ POP EAX
 CMP EAX, EBX
 CALL binop_je
 CMP EBX, False
-JNE EXIT_ELSE_29
+JNE EXIT_ELSE_18
 MOV EBX, 1
 MOV [EBP-8], EBX
-EXIT_ELSE_29:
-EXIT_ELSE_29:
+EXIT_ELSE_18:
+EXIT_ELSE_11:
 MOV EBX, [EBP-8]
 PUSH EBX
 CALL print
 POP EBX
+; interrupcao de saida
+    POP EBP
+    MOV EAX, 1
+    INT 0x80
+    

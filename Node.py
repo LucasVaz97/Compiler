@@ -15,6 +15,7 @@ class Node:
         self.value=value
         self.children=children
         Node.i=Node.newId()
+        self.i=Node.i
   
 
     def Evaluate(self):
@@ -148,28 +149,28 @@ class BinOp(Node):
 
 class WhileOP(Node):
     def Evaluate(self):
-        Compiler.AddInstruction("LOOP_{}:".format(Node.i))
+        Compiler.AddInstruction("LOOP_{}:".format(self.i))
         self.children[0].Evaluate()
         Compiler.AddInstruction("CMP EBX, False")
-        Compiler.AddInstruction("JE EXIT_{}".format(Node.i))
+        Compiler.AddInstruction("JE EXIT_{}".format(self.i))
         self.children[1].Evaluate()
-        Compiler.AddInstruction("JMP LOOP_{}".format(Node.i))
-        Compiler.AddInstruction("EXIT_{}:".format(Node.i))
+        Compiler.AddInstruction("JMP LOOP_{}".format(self.i))
+        Compiler.AddInstruction("EXIT_{}:".format(self.i))
       
 
 class ifOP(Node):
     def Evaluate(self):
         self.children[0].Evaluate()
         Compiler.AddInstruction("CMP EBX, False")
-        Compiler.AddInstruction("JE EXIT_{}".format(Node.i))
+        Compiler.AddInstruction("JE EXIT_{}".format(self.i))
         self.children[1].Evaluate()
-        Compiler.AddInstruction("EXIT_{}:".format(Node.i))
-        if(len(self.children) and self.children[2]):
+        Compiler.AddInstruction("EXIT_{}:".format(self.i))
+        if(len(self.children)>2 and self.children[2]):
             self.children[0].Evaluate()
             Compiler.AddInstruction("CMP EBX, False")
-            Compiler.AddInstruction("JNE EXIT_ELSE_{}".format(Node.i))
+            Compiler.AddInstruction("JNE EXIT_ELSE_{}".format(self.i))
             self.children[2].Evaluate()
-            Compiler.AddInstruction("EXIT_ELSE_{}:".format(Node.i))
+            Compiler.AddInstruction("EXIT_ELSE_{}:".format(self.i))
 
 
 
