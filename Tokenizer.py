@@ -105,7 +105,7 @@ class Tokenizer:
         else:
             var=""
             condition=True
-            while(self.position!=len(self.origin) and self.origin[self.position] not in TypeDic and self.origin[self.position].isalnum() and self.origin[self.position]!="\n" and " " not in self.origin[self.position]):
+            while(self.position!=len(self.origin) and self.origin[self.position] not in TypeDic and (self.origin[self.position].isalnum() or self.origin[self.position]=="_") and self.origin[self.position]!="\n" and " " not in self.origin[self.position]):
                 var=var+self.origin[self.position]
                 self.position+=1
 

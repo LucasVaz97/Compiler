@@ -21,6 +21,7 @@ class BinOp(Node):
         if(self.value=="+"):
             if(self.children[0].GetType() != "String"):
                 result = self.children[0].Evaluate()+ self.children[1].Evaluate()
+                return result
             else:
                 raise ValueError("Cannot Sum String")
         
