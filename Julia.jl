@@ -1,3 +1,4 @@
-local y::Int
-     y = false+1 
-    println(  y )
+
+    if(10<7)
+        println( 1)
+    end

@@ -81,6 +81,8 @@ class WhileOP(Node):
 
 class ifOP(Node):
     def Evaluate(self):
+        if(self.children[0].GetType() == "String"):
+            raise ValueError("Can not use String in if Statement")
         if(self.children[0].Evaluate()):
             self.children[1].Evaluate()
         else:
