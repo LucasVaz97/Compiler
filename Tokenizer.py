@@ -13,11 +13,9 @@ TypeDic={"+":"Plus",
         "&&":"And",
         "||":"Or",
         "==":"EqualCompare",
-        "::":"Declaration"
+        "::":"Declaration",
+        ",":"Comma"
 }
-
-
-
 
 
 Reserved={"println":"Reserved",
@@ -32,7 +30,9 @@ Reserved={"println":"Reserved",
           "Bool":"Type",
           "String":"Type",
           "true":"Bool",
-          "false":"Bool"
+          "false":"Bool",
+          "return":"Reserved",
+          "function":"Reserved"
 }
 
 
