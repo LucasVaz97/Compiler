@@ -112,6 +112,10 @@ class UnOp(Node):
         if(self.value=="Variable"):
             return self.children[0].Evaluate(symbT)
 
+    def GetType(self,symbT):
+        return self.children[0].GetType(symbT)
+
+
 
 
 class Block(Node):
@@ -134,7 +138,7 @@ class ReadLine(Node):
     def GetType(self,symbT):
         return "Int"
 
-    def Evaluate(self):
+    def Evaluate(self,symbT):
         a= input()
         val=int(a)
         return val
